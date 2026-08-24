@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/head_bg"
+        android:padding="14dp">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="←"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:textColor="@color/txt"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.06"
+            android:textColor="@color/txt"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="18dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView style="@style/Lbl" android:text="🧠 AI — dimaag" />
+            <TextView style="@style/Hint"
+                android:text="Ye keys pehle se bhari hui hain. Apni daalni ho to badal dijiye. Sab ENCRYPTED store hoti hain." />
+
+            <TextView style="@style/Lbl2" android:text="Groq key" />
+            <EditText android:id="@+id/groq" style="@style/Fld"
+                android:hint="gsk_..." tools:ignore="Autofill" />
+
+            <TextView style="@style/Lbl2"
+                android:text="Cloudflare Account ID" />
+            <EditText android:id="@+id/cfAcc" style="@style/Fld"
+                android:hint="32 character" tools:ignore="Autofill" />
+
+            <TextView style="@style/Lbl2"
+                android:text="Cloudflare Token" />
+            <EditText android:id="@+id/cfTok" style="@style/Fld"
+                android:hint="cfut_..." tools:ignore="Autofill" />
+
+            <View style="@style/Sep" />
+
+            <TextView style="@style/Lbl" android:text="🔊 Awaaz" />
+
+            <TextView style="@style/Lbl2" android:text="Sarvam key" />
+            <EditText android:id="@+id/sarvam" style="@style/Fld"
+                android:hint="sk_..." tools:ignore="Autofill" />
+
+            <Switch
+                android:id="@+id/sarvamVoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sarvam ki Indian awaaz use karo"
+                android:textColor="@color/dim"
+                android:textSize="14sp"
+                android:layout_marginTop="14dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+            <TextView style="@style/Hint"
+                android:text="Band karoge to Android ki apni awaaz chalegi — offline bhi kaam karti hai" />
+
+            <View style="@style/Sep" />
+
+            <TextView style="@style/Lbl" android:text="👂 Wake word" />
+            <TextView style="@style/Lbl2"
+                android:text="Kis naam se bulaoge" />
+            <EditText android:id="@+id/wakeWord" style="@style/Fld"
+                android:hint="jarvis" tools:ignore="Autofill" />
+            <TextView style="@style/Hint"
+                android:text="⚠️ Wake word ON rakhne se battery zyada khatam hoti hai aur notification hamesha dikhega — Android ka niyam hai." />
+
+            <TextView
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Save karo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/txt"
+                android:background="@drawable/btn_send"
+                android:layout_marginTop="26dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RAVAN X HOSTING TEAM\nDeveloper: Ujjawal X Official\n@UjjawalXsarkar"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/dim3"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="20dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

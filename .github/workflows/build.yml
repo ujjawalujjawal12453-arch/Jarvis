@@ -1,0 +1,93 @@
+name: Build JARVIS APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:      # GitHub pe button dabakar bhi chala sakte ho
+
+permissions:
+  contents: write          # ← Release banane ke liye ZAROORI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code laao
+        uses: actions/checkout@v4
+
+      - name: Java 17 lagao
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Android SDK lagao
+        uses: android-actions/setup-android@v3
+
+      - name: Build settings pakke karo
+        run: |
+          cat > gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=768m
+          org.gradle.daemon=false
+          org.gradle.parallel=false
+          android.useAndroidX=true
+          android.nonTransitiveRClass=true
+          kotlin.incremental=false
+          kotlin.compiler.execution.strategy=in-process
+          EOF
+          echo "--- java ---"; java -version
+          echo "--- gradle ---"; gradle --version | head -6
+          echo "--- sdk ---"; echo "$ANDROID_HOME"; ls "$ANDROID_HOME"
+
+      - name: Gradle wrapper banao
+        run: |
+          gradle wrapper --gradle-version 8.7 --no-daemon
+          chmod +x ./gradlew
+          ./gradlew --version
+
+      - name: APK banao
+        run: |
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 \
+            | tee build.log
+          exit ${PIPESTATUS[0]}
+
+      - name: Error dikhao (fail hone par)
+        if: failure()
+        run: |
+          echo "==================== ASLI ERROR ===================="
+          grep -nE "^e: |error:|FAILURE|What went wrong|Caused by|> " \
+            build.log | head -60 || tail -80 build.log
+          echo "===================================================="
+
+      - name: APK ka naam theek karo
+        run: |
+          mkdir -p out
+          find app/build/outputs/apk -name "*.apk" \
+            -exec cp {} out/JARVIS.apk \;
+          ls -lh out/
+
+      - name: APK upload karo
+        uses: actions/upload-artifact@v4
+        with:
+          name: JARVIS-APK
+          path: out/JARVIS.apk
+          retention-days: 90
+
+      - name: Release banao (download link ke liye)
+        continue-on-error: true      # fail ho to bhi APK to bani hai
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: JARVIS v1.0.${{ github.run_number }}
+          body: |
+            ## 📱 JARVIS — Android Assistant
+
+            Neeche **JARVIS.apk** pe click karke download karo,
+            phir phone me install kar lo.
+
+            ⚠️ Pehli baar "Unknown sources" allow karna padega.
+          files: out/JARVIS.apk
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
